@@ -12,7 +12,7 @@ $ make install
 ```
 
 * Build dependencies: None
-* Runtime dependencies: openldap
+* Runtime dependencies: None
 
 ## Installing from packages
 
