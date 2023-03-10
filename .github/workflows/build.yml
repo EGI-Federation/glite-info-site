@@ -1,0 +1,100 @@
+---
+name: Create packages and test installation
+
+on:
+  pull_request:
+
+jobs:
+  # XXX done outside of the build matrix due to different container name
+  build-centos7:
+    name: Build CentOS 7 RPMs
+    runs-on: ubuntu-latest
+    container: quay.io/centos/centos:7
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Install build requisites
+        run: |
+          yum install -y rpm-build yum-utils rpmlint
+          yum-builddep -y glite-info-site.spec
+      - name: build rpm
+        run: |
+          make clean rpm
+          rpmlint --file .rpmlint.ini build/RPMS/noarch/*.el7.noarch.rpm
+      - name: Upload RPMs
+        uses: actions/upload-artifact@v3
+        with:
+          name: rpms7
+          path: |
+            build/RPMS/noarch/glite-info-site-*.el7.noarch.rpm
+
+  # Use a matrix for CentOS Stream versions
+  build:
+    strategy:
+      matrix:
+        centos-version: [8, 9]
+    name: Build CentOS ${{ matrix.centos-version }} RPMs
+    runs-on: ubuntu-latest
+    container: quay.io/centos/centos:stream${{ matrix.centos-version }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Install build requisites
+        run: |
+          yum install -y rpm-build yum-utils rpmlint
+          yum-builddep -y glite-info-site.spec
+      - name: build rpm
+        run: |
+          make clean rpm
+          rpmlint --file .rpmlint.ini build/RPMS/noarch/*.el${{ matrix.centos-version }}.noarch.rpm
+      - name: Upload RPMs
+        uses: actions/upload-artifact@v3
+        with:
+          name: rpms${{ matrix.centos-version }}
+          path: |
+            build/RPMS/noarch/glite-info-site-*.el${{ matrix.centos-version }}.noarch.rpm
+
+  install-centos7:
+    name: Install CentOS 7 RPMs
+    needs: build-centos7
+    runs-on: ubuntu-latest
+    container: quay.io/centos/centos:7
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: rpms7
+      - name: Install generated RPMs
+        run: |
+          yum localinstall -y glite-info-site-*.el7.noarch.rpm
+
+  # Dependency from PowerTools: openldap-servers
+  centos8-install:
+    name: Install CentOS Stream 8 RPMs
+    needs: build
+    runs-on: ubuntu-latest
+    container: quay.io/centos/centos:stream8
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: rpms8
+      - name: Install generated RPMs
+        run: |
+          sed -i 's/^enabled=0/enabled=1/' /etc/yum.repos.d/CentOS-Stream-PowerTools.repo
+          yum localinstall -y glite-info-site-*.el8.noarch.rpm
+
+  # XXX Dependencies from EPEL: openldap-servers
+  centos9-install:
+    name: Install CentOS Stream 9 RPMs
+    needs: build
+    runs-on: ubuntu-latest
+    container: quay.io/centos/centos:stream9
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: rpms9
+      - name: Install generated RPMs
+        run: |
+          yum install -y epel-release
+          yum localinstall -y glite-info-site-*.el9.noarch.rpm
