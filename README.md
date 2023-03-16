@@ -1,4 +1,4 @@
-# Site component for the glite-info-static framework.
+# Site component for the glite-info-static framework
 
 This repository contains the site component for the
  [glite-info-static](https://github.com/EGI-Federation/glite-info-static) framework.
