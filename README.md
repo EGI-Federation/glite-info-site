@@ -11,8 +11,8 @@ BDII documentation is available at
 $ make install
 ```
 
-* Build dependencies: None
-* Runtime dependencies: None
+- Build dependencies: None
+- Runtime dependencies: None
 
 ## Installing from packages
 
