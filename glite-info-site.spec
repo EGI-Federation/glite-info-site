@@ -1,6 +1,6 @@
 Name:          glite-info-site
-Version:       0.4.0
-Release:       2%{?dist}
+Version:       0.4.1
+Release:       1%{?dist}
 Summary:       Site component for the glite-info-static framework.
 Group:         System/Monitoring
 License:       ASL 2.0
@@ -41,6 +41,9 @@ rm -rf %{buildroot}
 %license /usr/share/licenses/%{name}-%{version}/LICENSE.txt
 
 %changelog
+* Thu Mar 16 2023 Baptiste Grenier <baptiste.grenier@egi.eu> - 0.4.1-1
+- Update source URL information, package additional documentation. (#2) (Baptiste Grenier)
+
 * Wed Apr 24 2013 Maria Alandes <maria.alandes.pradillo@cern.ch> - 0.4.0-2
 - Added Source URL information
 

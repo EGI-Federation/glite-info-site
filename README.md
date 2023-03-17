@@ -1,4 +1,4 @@
-# Site component for the glite-info-static framework.
+# Site component for the glite-info-static framework
 
 This repository contains the site component for the
  [glite-info-static](https://github.com/EGI-Federation/glite-info-static) framework.
@@ -11,8 +11,8 @@ BDII documentation is available at
 $ make install
 ```
 
-* Build dependencies: None
-* Runtime dependencies: None
+- Build dependencies: None
+- Runtime dependencies: None
 
 ## Installing from packages
 

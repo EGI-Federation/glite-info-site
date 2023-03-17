@@ -7,3 +7,27 @@ and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.4.1] - 2023-03-16
+
+### Added
+
+- Update source URL information, package additional documentation. (#2) (Baptiste Grenier)
+
+## [0.4.0] - 2010-09-06
+
+### Fixed
+
+- Fixes for IS-143, IS-146 and IS-147 (Laurence Field)
+
+## [0.2.0] - 2010-04-08
+
+### Changed
+
+- Refactored (Laurence Field)
+
+## [0.2.0] - 2010-02-15
+
+### Added
+
+- First release (Laurence Field)
